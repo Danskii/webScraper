@@ -33,6 +33,12 @@ const { Cluster } = require("puppeteer-cluster");
   cluster.queue(
     "http://professionallyspeakingtest/publications/professionally_speaking/2019-12/2019-12-Reviews-PS.asp"
   );
+  cluster.queue(
+    "http://professionallyspeakingtest/publications/professionally_speaking/2019-09/2019-09-Reviews-PS.asp"
+  );
+  cluster.queue(
+    "http://professionallyspeakingtest/publications/professionally_speaking/2019-06/2019-06-Reviews-PS.asp"
+  );
 
   // Shutdown after everything is done
   await cluster.idle();
