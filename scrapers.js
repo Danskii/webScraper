@@ -2,9 +2,15 @@ const { Cluster } = require("puppeteer-cluster");
 
 (async () => {
   // Create a cluster with 2 workers
+  //https://github.com/thomasdondorf/puppeteer-cluster#clusterlaunchoptions
   const cluster = await Cluster.launch({
     concurrency: Cluster.CONCURRENCY_CONTEXT,
     maxConcurrency: 2,
+    // monitor: true,
+    //specifies the options to use on puppeteer launch https://github.com/puppeteer/puppeteer/blob/v5.2.1/docs/api.md#overview
+    puppeteerOptions: {
+      headless: true,
+    },
   });
 
   // Define a task
@@ -14,9 +20,17 @@ const { Cluster } = require("puppeteer-cluster");
     await page.goto(url, { waitUntil: "domcontentloaded" });
 
     const result = await page.evaluate(() => {
-      let byLines = document.querySelectorAll(".byLine");
+      let byLines = document.getElementsByTagName("body");
       const arrayOfBylines = [...byLines];
-      return arrayOfBylines.map((h) => h.innerHTML);
+      return arrayOfBylines.map((item, index, array) =>
+        item.innerHTML
+        //clean up \n from innerHTML
+        .replace(/\n/g, "")
+        //clean up \t from innerHTML
+        .replace(/\t/g, "")
+        //fix \' to '  innerHTML
+        .replace(/\'/g,"'")
+      );
     });
 
     console.log(result);
