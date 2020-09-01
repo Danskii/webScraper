@@ -1,4 +1,13 @@
+//REFERENCES:
+//https://github.com/puppeteer/puppeteer/blob/v5.2.1/docs/api.md
+//https://github.com/thomasdondorf/puppeteer-cluster
+
+//TODO:
+
+//require to include cluster for puppeteer
 const { Cluster } = require("puppeteer-cluster");
+//require below allows the file to be written to desktop
+const fs = require("fs");
 
 (async () => {
   // Create a cluster with 2 workers
@@ -24,18 +33,28 @@ const { Cluster } = require("puppeteer-cluster");
       const arrayOfBylines = [...byLines];
       return arrayOfBylines.map((item, index, array) =>
         item.innerHTML
-        //clean up \n from innerHTML
-        .replace(/\n/g, "")
-        //clean up \t from innerHTML
-        .replace(/\t/g, "")
-        //fix \' to '  innerHTML
-        .replace(/\'/g,"'")
+          //clean up \n from innerHTML
+          .replace(/\n/g, "")
+          //clean up \t from innerHTML
+          .replace(/\t/g, "")
+          //fix \' to '  innerHTML
+          .replace(/\'/g, "'")
       );
     });
 
     console.log(result);
+
     await browser.close();
   });
+
+
+  /*
+          //write file
+  fs.writeFile("scraped.html", output, function (err) {
+    if (err) return console.log(err);
+    console.log("file created");
+  });
+*/
 
   // Add some pages to queue
   cluster.queue(
@@ -52,6 +71,21 @@ const { Cluster } = require("puppeteer-cluster");
   );
   cluster.queue(
     "http://professionallyspeakingtest/publications/professionally_speaking/2019-06/2019-06-Reviews-PS.asp"
+  );
+  cluster.queue(
+    "http://pourparlerprofessiontest/publications/professionally_speaking/2020-06/2020-06-Reviews-PPP.asp"
+  );
+  cluster.queue(
+    "http://pourparlerprofessiontest/publications/professionally_speaking/2020-03/2020-03-Reviews-PPP.asp"
+  );
+  cluster.queue(
+    "http://pourparlerprofessiontest/publications/professionally_speaking/2019-12/2019-12-Reviews-PPP.asp"
+  );
+  cluster.queue(
+    "http://pourparlerprofessiontest/publications/professionally_speaking/2019-09/2019-09-Reviews-PPP.asp"
+  );
+  cluster.queue(
+    "http://pourparlerprofessiontest/publications/professionally_speaking/2019-06/2019-06-Reviews-PPP.asp"
   );
 
   // Shutdown after everything is done
