@@ -44,17 +44,15 @@ const fs = require("fs");
 
     console.log(result);
 
+    //THIS COMMAND WILL ONLY APPEND TO AN EXISTING HTML FILE CALLED SCRAPED.HTML
+    //CREATE THE FILE BEFORE YOU RUN THE PROGRAM
+    fs.appendFile("scraped.html", result, function (err) {
+      if (err) return console.log(err);
+      console.log("file created");
+    });
+
     await browser.close();
   });
-
-
-  /*
-          //write file
-  fs.writeFile("scraped.html", output, function (err) {
-    if (err) return console.log(err);
-    console.log("file created");
-  });
-*/
 
   // Add some pages to queue
   cluster.queue(
